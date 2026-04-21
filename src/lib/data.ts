@@ -132,6 +132,32 @@ const SCHEDULED: ScheduledEvent[] = [
     title: "パーソナルカラー診断", teacher: "", subtitle: "",
     time: "14:00–16:00", kind: "regular", capacity: 10,
   },
+
+  // 商店主セミナー（特別企画、定員20名）
+  {
+    year: 2026, month: 5, day: 20, base: Y_BASE,
+    title: "商店主セミナー", teacher: "三浦 和夫（商店主会 会長）",
+    subtitle: "地域で商いを続けるヒント",
+    time: "14:00–16:00", kind: "seminar", capacity: 20,
+  },
+  {
+    year: 2026, month: 6, day: 10, base: Y_BASE,
+    title: "商店主セミナー", teacher: "三浦 和夫（商店主会 会長）",
+    subtitle: "地域で商いを続けるヒント",
+    time: "14:00–16:00", kind: "seminar", capacity: 20,
+  },
+  {
+    year: 2026, month: 6, day: 3, base: K_BASE,
+    title: "商店主セミナー", teacher: "長谷川 豊（商店主会 副会長）",
+    subtitle: "地域で商いを続けるヒント",
+    time: "14:00–16:00", kind: "seminar", capacity: 20,
+  },
+  {
+    year: 2026, month: 6, day: 17, base: K_BASE,
+    title: "商店主セミナー", teacher: "長谷川 豊（商店主会 副会長）",
+    subtitle: "地域で商いを続けるヒント",
+    time: "14:00–16:00", kind: "seminar", capacity: 20,
+  },
 ];
 
 function deterministicBooked(cap: number, day: number, month: number, base: BaseCode): number {

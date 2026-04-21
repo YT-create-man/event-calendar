@@ -567,6 +567,11 @@ export default function Calendar() {
               <span className="d" />
               港南台BASE
             </span>
+            <span className="legend-pill sem">
+              <span className="d" />
+              <span className="legend-badge">特別</span>
+              商店主セミナー
+            </span>
           </div>
           <button
             className={`edit-toggle ${editMode ? "on" : ""}`}
@@ -651,6 +656,8 @@ export default function Calendar() {
               <br />
               事前予約制・定員6名（メンバー＆お友達は無料／一般1,000円）
               <br />
+              5/20・6/10は特別企画「商店主セミナー」（定員20名）
+              <br />
               お申し込み 046-825-5558（10:30–19:00 ※店休日を除く）
             </div>
           </div>
@@ -665,6 +672,8 @@ export default function Calendar() {
               横浜市港南区港南台3-2 BASE 2F
               <br />
               事前予約制・定員10名
+              <br />
+              6/3・6/17は特別企画「商店主セミナー」（定員20名）
             </div>
           </div>
         </div>
