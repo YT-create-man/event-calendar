@@ -665,15 +665,17 @@ export default function Calendar() {
         <div className="info-card k">
           <div className="ic-mark">港</div>
           <div>
-            <h4>港南台BASE</h4>
+            <h4>港南台BASE（SLA港南台校）</h4>
             <div className="ic-meta">
-              14:00–16:00
+              14:00–16:00 開催（定員はイベントごとに異なる／増枠可）
               <br />
-              横浜市港南区港南台3-2 BASE 2F
+              横浜市港南区港南台4-24-2 SLMC港南台BASE
               <br />
-              事前予約制・定員10名
+              開館 10:30–19:00 ／ 休館 水曜
               <br />
               6/3・6/17は特別企画「商店主セミナー」（定員20名）
+              <br />
+              お申し込み 045-352-7635（いつもの担当まで）
             </div>
           </div>
         </div>

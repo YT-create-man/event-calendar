@@ -31,10 +31,11 @@ type ScheduledEvent = {
   time: string;
   kind: EventKind;
   capacity: number;
+  notes?: string;
 };
 
 const YOKOSUKA_ADDRESS = "横須賀市大津町1-22-22 SLMC横須賀BASE";
-const KOUNANDAI_ADDRESS = "横浜市港南区港南台3-2 BASE 2F";
+const KOUNANDAI_ADDRESS = "横浜市港南区港南台4-24-2 SLMC港南台BASE";
 
 const SCHEDULED: ScheduledEvent[] = [
   // 横須賀BASE 2026年5月（毎週 火・土 14:00〜 ※16日のみ13:00〜、定員6名）
@@ -121,12 +122,51 @@ const SCHEDULED: ScheduledEvent[] = [
     time: "14:00–16:00", kind: "regular", capacity: 6,
   },
 
-  // 港南台BASE（現時点で確定している分のみ）
+  // 港南台BASE 2026年5月（SLA港南台校）
+  {
+    year: 2026, month: 5, day: 7, base: K_BASE,
+    title: "Smart Life AO校説明会", teacher: "",
+    subtitle: "AO校で何ができる？スマートライフデザイン学とは？どう活用できるかをまるごと説明",
+    time: "14:00–16:00", kind: "regular", capacity: 20,
+    notes: "参加費：無料／定員20名（増枠可）",
+  },
+  {
+    year: 2026, month: 5, day: 9, base: K_BASE,
+    title: "iPhone連係について Part④", teacher: "",
+    subtitle: "“なんとなく使っている”iPhoneを安心して使える相棒に。便利な操作・アプリ・連係を確認",
+    time: "14:00–16:00", kind: "regular", capacity: 20,
+    notes: "参加費：無料／定員20名（増枠可）／基礎講座未参加・④から初参加も歓迎",
+  },
   {
     year: 2026, month: 5, day: 14, base: K_BASE,
-    title: "生前整理", teacher: "", subtitle: "",
-    time: "14:00–16:00", kind: "regular", capacity: 10,
+    title: "生前整理 Part②", teacher: "ものと心の生前整理アドバイザー 鎌滝様",
+    subtitle: "“前向きな整理”のPart②。大切なものを整理しながら、すっきり自分らしく過ごす",
+    time: "14:00–16:00", kind: "regular", capacity: 15,
+    notes: "AO生・CC会員限定／定員15名（増枠可）",
   },
+  {
+    year: 2026, month: 5, day: 16, base: K_BASE,
+    title: "安全講習 〜デジタル詐欺対策〜", teacher: "",
+    subtitle: "“2段階認証”や“パスキー”って何？詐欺被害から身を守るために知っておきたいこと",
+    time: "14:00–16:00", kind: "regular", capacity: 20,
+    notes: "参加費：無料／定員20名（増枠可）",
+  },
+  {
+    year: 2026, month: 5, day: 21, base: K_BASE,
+    title: "AI講習 〜GoogleWorkspace編〜", teacher: "",
+    subtitle: "話題のAIをGoogleWorkspaceで。日常で役立つAIを一緒に学ぶ",
+    time: "14:00–16:00", kind: "regular", capacity: 15,
+    notes: "AO生・CC会員限定／定員15名（増枠可）",
+  },
+  {
+    year: 2026, month: 5, day: 28, base: K_BASE,
+    title: "スマホの写真を1冊の宝物に Part①", teacher: "写真整理上級アドバイザー 寺尾様",
+    subtitle: "スマホに眠る写真を一冊のフォトブックに。全2回で完成を目指す",
+    time: "14:00–16:00", kind: "regular", capacity: 15,
+    notes: "AO生・CC会員限定／定員15名限定",
+  },
+
+  // 港南台BASE 2026年6月（確定分のみ）
   {
     year: 2026, month: 6, day: 11, base: K_BASE,
     title: "パーソナルカラー診断", teacher: "", subtitle: "",
@@ -191,7 +231,7 @@ function baseEventsForDate(
       capacity: s.capacity,
       booked: deterministicBooked(s.capacity, day, month, s.base),
       address,
-      notes: "",
+      notes: s.notes || "",
     };
   });
 }
