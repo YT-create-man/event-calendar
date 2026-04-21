@@ -565,11 +565,7 @@ export default function Calendar() {
             </span>
             <span className="legend-pill k">
               <span className="d" />
-              港南台BASE（木・土）
-            </span>
-            <span className="legend-pill sem">
-              <span className="d" />
-              商店主セミナー
+              港南台BASE
             </span>
           </div>
           <button
@@ -649,11 +645,13 @@ export default function Calendar() {
           <div>
             <h4>横須賀BASE</h4>
             <div className="ic-meta">
-              毎週 火・土 14:00–16:00
+              毎週 火・土 14:00–16:00（認知症予防講座のみ13:00開始）
               <br />
-              横須賀市本町2-1 BASE 1F
+              横須賀市大津町1-22-22 SLMC横須賀BASE
               <br />
-              5/20・6/10は特別回「商店主セミナー」（定員20名）
+              事前予約制・定員6名（メンバー＆お友達は無料／一般1,000円）
+              <br />
+              お申し込み 046-825-5558（10:30–19:00 ※店休日を除く）
             </div>
           </div>
         </div>
@@ -662,11 +660,11 @@ export default function Calendar() {
           <div>
             <h4>港南台BASE</h4>
             <div className="ic-meta">
-              毎週 木・土 14:00–16:00
+              14:00–16:00
               <br />
               横浜市港南区港南台3-2 BASE 2F
               <br />
-              6/3・6/17は特別回「商店主セミナー」（定員20名）
+              事前予約制・定員10名
             </div>
           </div>
         </div>

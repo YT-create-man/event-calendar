@@ -20,110 +20,154 @@ export type EventItem = {
   notes: string;
 };
 
-type EventTemplate = { title: string; teacher: string };
-
-const YOKO_DEFAULTS: EventTemplate[] = [
-  { title: "こども造形ワークショップ", teacher: "山田 あきこ" },
-  { title: "親子プログラミング", teacher: "佐藤 健" },
-  { title: "地域交流カフェ", teacher: "高橋 美咲" },
-  { title: "読み聞かせタイム", teacher: "伊藤 順子" },
-  { title: "英会話ひろば", teacher: "Emily Parker" },
-  { title: "工作クラブ", teacher: "木村 翔" },
-  { title: "おはなし会", teacher: "鈴木 久美子" },
-  { title: "クラフト体験", teacher: "渡辺 彩" },
-];
-
-const KOU_DEFAULTS: EventTemplate[] = [
-  { title: "放課後クラブ", teacher: "田中 ひろし" },
-  { title: "手づくりおやつ", teacher: "中村 さゆり" },
-  { title: "絵本の時間", teacher: "小林 まり" },
-  { title: "ボードゲーム大会", teacher: "加藤 涼" },
-  { title: "書道教室", teacher: "松本 泰斗" },
-  { title: "粘土あそび", teacher: "藤田 ひかる" },
-  { title: "リズム遊び", teacher: "岡田 奈々" },
-  { title: "科学じっけん", teacher: "清水 博士" },
-];
-
-type SeminarDate = {
+type ScheduledEvent = {
   year: number;
   month: number;
   day: number;
   base: BaseCode;
+  title: string;
   teacher: string;
+  subtitle: string;
+  time: string;
+  kind: EventKind;
+  capacity: number;
 };
 
-export const SEMINAR_DATES: SeminarDate[] = [
-  { year: 2026, month: 5, day: 20, base: Y_BASE, teacher: "三浦 和夫（商店主会 会長）" },
-  { year: 2026, month: 6, day: 10, base: Y_BASE, teacher: "三浦 和夫（商店主会 会長）" },
-  { year: 2026, month: 6, day: 3, base: K_BASE, teacher: "長谷川 豊（商店主会 副会長）" },
-  { year: 2026, month: 6, day: 17, base: K_BASE, teacher: "長谷川 豊（商店主会 副会長）" },
+const YOKOSUKA_ADDRESS = "横須賀市大津町1-22-22 SLMC横須賀BASE";
+const KOUNANDAI_ADDRESS = "横浜市港南区港南台3-2 BASE 2F";
+
+const SCHEDULED: ScheduledEvent[] = [
+  // 横須賀BASE 2026年5月（毎週 火・土 14:00〜 ※16日のみ13:00〜、定員6名）
+  {
+    year: 2026, month: 5, day: 2, base: Y_BASE,
+    title: "生成AI体験", teacher: "", subtitle: "ChatGPTを使ってみよう！",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 5, day: 5, base: Y_BASE,
+    title: "安全講習", teacher: "", subtitle: "PC・スマホを使う際の注意点や活用方法を学ぶ",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 5, day: 9, base: Y_BASE,
+    title: "マイクラ", teacher: "", subtitle: "マイクラで楽しくPC操作を学ぼう！目指せエンダードラゴン討伐",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 5, day: 12, base: Y_BASE,
+    title: "iPhone基礎講座3", teacher: "", subtitle: "iPhoneの使い方を基礎から（Part1・2未参加も歓迎）",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 5, day: 16, base: Y_BASE,
+    title: "認知症予防講座", teacher: "", subtitle: "救命救急のプロから認知症予防のための知識を学ぶ",
+    time: "13:00–15:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 5, day: 19, base: Y_BASE,
+    title: "iPhoneで綺麗な写真を撮ろう", teacher: "", subtitle: "iPhoneで綺麗な写真を撮るコツを学ぶ",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 5, day: 23, base: Y_BASE,
+    title: "AO入校説明会", teacher: "", subtitle: "デジタルライフプランナー資格のご案内",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 5, day: 26, base: Y_BASE,
+    title: "エンディングノート書こう", teacher: "", subtitle: "終活のプロと始め方・書き方を考える",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+
+  // 横須賀BASE 2026年6月（毎週 火・土 14:00〜 ※20日のみ13:00〜、定員6名）
+  {
+    year: 2026, month: 6, day: 2, base: Y_BASE,
+    title: "安全講習", teacher: "", subtitle: "PC・スマホを使う際の注意点や活用方法を学ぶ",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 6, day: 6, base: Y_BASE,
+    title: "LINEの使い方講座", teacher: "", subtitle: "LINEの使い方を初歩から学ぶ",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 6, day: 9, base: Y_BASE,
+    title: "生成AIをやってみよう", teacher: "", subtitle: "ChatGPTでの画像生成を学ぶ",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 6, day: 13, base: Y_BASE,
+    title: "マイクラ", teacher: "", subtitle: "マイクラで楽しくPC操作を学ぼう！目指せエンダードラゴン討伐",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 6, day: 16, base: Y_BASE,
+    title: "安心アルバムを作ろう", teacher: "", subtitle: "もしもの場合に備えて個人情報と写真でアルバムを作成",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 6, day: 20, base: Y_BASE,
+    title: "認知症予防講座", teacher: "", subtitle: "救命救急のプロから認知症予防のための知識を学ぶ",
+    time: "13:00–15:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 6, day: 23, base: Y_BASE,
+    title: "生前整理", teacher: "", subtitle: "デジタル遺品（パスワード・写真）の整理方法を終活のプロから学ぶ",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+  {
+    year: 2026, month: 6, day: 27, base: Y_BASE,
+    title: "AO入校説明会", teacher: "", subtitle: "デジタルライフプランナー資格のご案内",
+    time: "14:00–16:00", kind: "regular", capacity: 6,
+  },
+
+  // 港南台BASE（現時点で確定している分のみ）
+  {
+    year: 2026, month: 5, day: 14, base: K_BASE,
+    title: "生前整理", teacher: "", subtitle: "",
+    time: "14:00–16:00", kind: "regular", capacity: 10,
+  },
+  {
+    year: 2026, month: 6, day: 11, base: K_BASE,
+    title: "パーソナルカラー診断", teacher: "", subtitle: "",
+    time: "14:00–16:00", kind: "regular", capacity: 10,
+  },
 ];
 
-function isSeminarDay(year: number, month: number, day: number, base: BaseCode) {
-  return SEMINAR_DATES.some(
-    (s) => s.year === year && s.month === month && s.day === day && s.base === base,
-  );
-}
-
-function seminarTeacher(year: number, month: number, day: number, base: BaseCode) {
-  const s = SEMINAR_DATES.find(
-    (s) => s.year === year && s.month === month && s.day === day && s.base === base,
-  );
-  return s ? s.teacher : "";
+function deterministicBooked(cap: number, day: number, month: number, base: BaseCode): number {
+  const seed = day * 7 + month * 3 + (base === Y_BASE ? 2 : 5);
+  return Math.max(0, cap - (seed % (cap + 3)));
 }
 
 function baseEventsForDate(
   year: number,
   month: number,
   day: number,
-  weekday: number,
+  _weekday: number,
 ): EventItem[] {
-  const events: EventItem[] = [];
-  const key = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-
-  const yokoSeminar = isSeminarDay(year, month, day, Y_BASE);
-  if (weekday === 2 || weekday === 6 || yokoSeminar) {
-    const tpl = YOKO_DEFAULTS[(day + month) % YOKO_DEFAULTS.length];
-    events.push({
-      id: `${key}-y`,
-      base: Y_BASE,
-      baseName: "横須賀BASE",
-      title: yokoSeminar ? "商店主セミナー" : tpl.title,
-      teacher: yokoSeminar ? seminarTeacher(year, month, day, Y_BASE) : tpl.teacher,
-      subtitle: yokoSeminar ? "地域で商いを続けるヒント" : "",
-      time: "14:00–16:00",
-      kind: yokoSeminar ? "seminar" : "regular",
-      capacity: yokoSeminar ? 20 : 8,
-      booked: yokoSeminar
-        ? Math.max(0, 20 - ((day * 3) % 22))
-        : Math.max(0, 8 - ((day * 5 + month) % 10)),
-      address: "横須賀市本町2-1 BASE 1F",
+  const matches = SCHEDULED.filter(
+    (s) => s.year === year && s.month === month && s.day === day,
+  );
+  return matches.map((s) => {
+    const key = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const baseCode = s.base === Y_BASE ? "y" : "k";
+    const baseName = s.base === Y_BASE ? "横須賀BASE" : "港南台BASE";
+    const address = s.base === Y_BASE ? YOKOSUKA_ADDRESS : KOUNANDAI_ADDRESS;
+    return {
+      id: `${key}-${baseCode}`,
+      base: s.base,
+      baseName,
+      title: s.title,
+      teacher: s.teacher,
+      subtitle: s.subtitle,
+      time: s.time,
+      kind: s.kind,
+      capacity: s.capacity,
+      booked: deterministicBooked(s.capacity, day, month, s.base),
+      address,
       notes: "",
-    });
-  }
-
-  const kouSeminar = isSeminarDay(year, month, day, K_BASE);
-  if (weekday === 4 || weekday === 6 || kouSeminar) {
-    const tpl = KOU_DEFAULTS[(day + month + 3) % KOU_DEFAULTS.length];
-    events.push({
-      id: `${key}-k`,
-      base: K_BASE,
-      baseName: "港南台BASE",
-      title: kouSeminar ? "商店主セミナー" : tpl.title,
-      teacher: kouSeminar ? seminarTeacher(year, month, day, K_BASE) : tpl.teacher,
-      subtitle: kouSeminar ? "地域で商いを続けるヒント" : "",
-      time: "14:00–16:00",
-      kind: kouSeminar ? "seminar" : "regular",
-      capacity: kouSeminar ? 20 : 10,
-      booked: kouSeminar
-        ? Math.max(0, 20 - ((day * 4 + 1) % 24))
-        : Math.max(0, 10 - ((day * 7 + month * 2) % 13)),
-      address: "横浜市港南区港南台3-2 BASE 2F",
-      notes: "",
-    });
-  }
-
-  return events;
+    };
+  });
 }
 
 const STORAGE_KEY = "evcal.edits.v2";
