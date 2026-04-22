@@ -26,6 +26,13 @@
   --k-accent: #E9A42C;
   --k-accent-soft: #FCE6B4;
 
+  --dx-bg: #E7F3EA;
+  --dx-border: #9FCCAE;
+  --dx-text: #1B5E20;
+  --dx-dot: #2E7D4F;
+  --dx-accent: #2E7D4F;
+  --dx-accent-soft: #C8E6CC;
+
   --seminar: #C2410C;
 
   --radius-sm: 6px;
@@ -109,6 +116,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .legend-pill.y { background: var(--y-bg); border-color: var(--y-border); color: var(--y-text); }
 .legend-pill.k { background: var(--k-bg); border-color: var(--k-border); color: var(--k-text); }
+.legend-pill.dx { background: var(--dx-bg); border-color: var(--dx-border); color: var(--dx-text); }
 .legend-pill.sem { background: #fff; border-color: var(--line-strong); color: var(--ink); }
 .legend-badge {
   display: inline-block;
@@ -124,34 +132,52 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .legend-pill .d { width: 8px; height: 8px; border-radius: 50%; }
 .legend-pill.y .d { background: var(--y-dot); }
 .legend-pill.k .d { background: var(--k-dot); }
+.legend-pill.dx .d { background: var(--dx-dot); }
 .legend-pill.sem .d { display: none; }
 
 /* ========== month switcher ========== */
 .month-tabs {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   background: #F1EDE3;
   padding: 6px;
   border-radius: 14px;
-  width: fit-content;
+  max-width: 100%;
   margin: 0 auto 20px;
   border: 1px solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
 }
 .month-tab {
-  padding: 10px 22px;
+  padding: 8px 14px;
   border-radius: 10px;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 13px;
   color: var(--ink-soft);
-  display: inline-flex; align-items: center; gap: 8px;
+  display: inline-flex; flex-direction: column; align-items: center;
+  gap: 0;
   transition: all .18s ease;
+  flex-shrink: 0;
+  line-height: 1.1;
+}
+.month-tab .t-year {
+  font-family: var(--font-num);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ink-faint);
+  letter-spacing: .02em;
 }
 .month-tab .m-num {
   font-family: var(--font-num);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: -.02em;
+}
+.month-tab .t-label {
+  font-size: 11px;
+  margin-left: 2px;
 }
 .month-tab:hover { color: var(--ink); }
 .month-tab.active {
@@ -372,6 +398,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: var(--k-bg);
   border-bottom-color: var(--k-border);
 }
+.modal-header.dx {
+  background: var(--dx-bg);
+  border-bottom-color: var(--dx-border);
+}
 .modal-base-tag {
   display: inline-flex; align-items: center; gap: 8px;
   font-weight: 700;
@@ -379,11 +409,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: var(--y-text);
 }
 .modal-header.k .modal-base-tag { color: var(--k-text); }
+.modal-header.dx .modal-base-tag { color: var(--dx-text); }
 .modal-base-dot {
   width: 10px; height: 10px; border-radius: 50%;
   background: var(--y-dot);
 }
 .modal-header.k .modal-base-dot { background: var(--k-dot); }
+.modal-header.dx .modal-base-dot { background: var(--dx-dot); }
 .modal-close {
   width: 32px; height: 32px;
   border-radius: 10px;
@@ -507,6 +539,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .btn-reserve.y { background: var(--y-accent); }
 .btn-reserve.k { background: var(--k-accent); }
+.btn-reserve.dx { background: var(--dx-accent); }
 .btn-reserve:hover { transform: translateY(-1px); filter: brightness(1.04); }
 .btn-reserve:disabled { opacity: .6; cursor: default; transform: none; }
 
@@ -532,7 +565,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .info-row {
   margin-top: 18px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
 }
 .info-card {
@@ -543,6 +576,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .info-card.y { background: var(--y-bg); border-color: var(--y-border); }
 .info-card.k { background: var(--k-bg); border-color: var(--k-border); }
+.info-card.dx { background: var(--dx-bg); border-color: var(--dx-border); }
 .info-card .ic-mark {
   width: 40px; height: 40px; border-radius: 10px;
   display: grid; place-items: center;
@@ -551,6 +585,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .info-card.y .ic-mark { background: var(--y-accent); }
 .info-card.k .ic-mark { background: var(--k-accent); }
+.info-card.dx .ic-mark { background: var(--dx-accent); }
 .info-card h4 {
   margin: 0 0 2px;
   font-family: var(--font-display);
@@ -558,6 +593,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .info-card.y h4 { color: var(--y-text); }
 .info-card.k h4 { color: var(--k-text); }
+.info-card.dx h4 { color: var(--dx-text); }
 .info-card .ic-meta {
   font-size: 12.5px;
   color: var(--ink-soft);

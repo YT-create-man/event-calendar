@@ -16,6 +16,35 @@ import {
 
 type Variant = "soft" | "compact" | "bold";
 
+function baseColorTokens(base: EventItem["base"]) {
+  if (base === "yokosuka") {
+    return {
+      bg: "var(--y-bg)",
+      border: "var(--y-border)",
+      text: "var(--y-text)",
+      dot: "var(--y-dot)",
+    };
+  }
+  if (base === "kounandai") {
+    return {
+      bg: "var(--k-bg)",
+      border: "var(--k-border)",
+      text: "var(--k-text)",
+      dot: "var(--k-dot)",
+    };
+  }
+  return {
+    bg: "var(--dx-bg)",
+    border: "var(--dx-border)",
+    text: "var(--dx-text)",
+    dot: "var(--dx-dot)",
+  };
+}
+
+function baseClass(base: EventItem["base"]) {
+  return base === "yokosuka" ? "y" : base === "kounandai" ? "k" : "dx";
+}
+
 function EventChip({
   ev,
   onClick,
@@ -29,22 +58,8 @@ function EventChip({
 }) {
   const r = remaining(ev);
   const status = statusOf(ev);
-  const isYoko = ev.base === "yokosuka";
   const isSeminar = ev.kind === "seminar";
-
-  const colors = isYoko
-    ? {
-        bg: "var(--y-bg)",
-        border: "var(--y-border)",
-        text: "var(--y-text)",
-        dot: "var(--y-dot)",
-      }
-    : {
-        bg: "var(--k-bg)",
-        border: "var(--k-border)",
-        text: "var(--k-text)",
-        dot: "var(--k-dot)",
-      };
+  const colors = baseColorTokens(ev.base);
 
   return (
     <button
@@ -182,7 +197,7 @@ function EventDetailModal({
 }) {
   const r = remaining(ev);
   const status = statusOf(ev);
-  const isYoko = ev.base === "yokosuka";
+  const bcls = baseClass(ev.base);
   const [count, setCount] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -204,7 +219,7 @@ function EventDetailModal({
   return (
     <div className="modal-scrim" onClick={onClose}>
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-        <div className={`modal-header ${isYoko ? "y" : "k"}`}>
+        <div className={`modal-header ${bcls}`}>
           <div className="modal-base-tag">
             <span className="modal-base-dot" />
             {ev.baseName}
@@ -289,7 +304,7 @@ function EventDetailModal({
                 <button onClick={() => setCount(Math.min(r, count + 1))}>＋</button>
               </div>
               <button
-                className={`btn-reserve ${isYoko ? "y" : "k"}`}
+                className={`btn-reserve ${bcls}`}
                 disabled={submitting}
                 onClick={() => {
                   setSubmitting(true);
@@ -314,7 +329,7 @@ function EventDetailModal({
 }
 
 function EventEditModal({ ev, onClose }: { ev: EventItem; onClose: () => void }) {
-  const isYoko = ev.base === "yokosuka";
+  const bcls = baseClass(ev.base);
   const [form, setForm] = useState({
     title: ev.title || "",
     teacher: ev.teacher || "",
@@ -372,7 +387,7 @@ function EventEditModal({ ev, onClose }: { ev: EventItem; onClose: () => void })
   return (
     <div className="modal-scrim" onClick={onClose}>
       <div className="modal-card edit" onClick={(e) => e.stopPropagation()}>
-        <div className={`modal-header ${isYoko ? "y" : "k"}`}>
+        <div className={`modal-header ${bcls}`}>
           <div className="modal-base-tag">
             <span className="modal-base-dot" />
             <span style={{ fontWeight: 800 }}>編集 · {ev.baseName}</span>
@@ -470,7 +485,7 @@ function EventEditModal({ ev, onClose }: { ev: EventItem; onClose: () => void })
               キャンセル
             </button>
             <button
-              className={`btn-reserve ${isYoko ? "y" : "k"}`}
+              className={`btn-reserve ${bcls}`}
               onClick={save}
               style={{ width: "auto", padding: "12px 22px" }}
             >
@@ -483,9 +498,30 @@ function EventEditModal({ ev, onClose }: { ev: EventItem; onClose: () => void })
   );
 }
 
+type Period = { year: number; month: number };
+
+const PERIODS: Period[] = [
+  { year: 2026, month: 4 },
+  { year: 2026, month: 5 },
+  { year: 2026, month: 6 },
+  { year: 2026, month: 7 },
+  { year: 2026, month: 8 },
+  { year: 2026, month: 9 },
+  { year: 2026, month: 10 },
+  { year: 2026, month: 11 },
+  { year: 2026, month: 12 },
+  { year: 2027, month: 1 },
+  { year: 2027, month: 2 },
+  { year: 2027, month: 3 },
+];
+
+function periodKey(p: Period) {
+  return `${p.year}-${p.month}`;
+}
+
 export default function Calendar() {
   const [mounted, setMounted] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState<5 | 6>(5);
+  const [selected, setSelected] = useState<Period>({ year: 2026, month: 5 });
   const [editMode, setEditMode] = useState(false);
   const [variant, setVariant] = useState<Variant>("soft");
   const [openEvent, setOpenEvent] = useState<EventItem | null>(null);
@@ -494,16 +530,19 @@ export default function Calendar() {
 
   useEffect(() => {
     setMounted(true);
-    const m = parseInt(localStorage.getItem("evcal.month") || "5", 10);
-    if (m === 5 || m === 6) setSelectedMonth(m);
+    const saved = localStorage.getItem("evcal.period");
+    if (saved) {
+      const match = PERIODS.find((p) => periodKey(p) === saved);
+      if (match) setSelected(match);
+    }
     setEditMode(localStorage.getItem("evcal.editMode") === "1");
     const v = localStorage.getItem("evcal.variant");
     if (v === "soft" || v === "compact" || v === "bold") setVariant(v);
   }, []);
 
   useEffect(() => {
-    if (mounted) localStorage.setItem("evcal.month", String(selectedMonth));
-  }, [selectedMonth, mounted]);
+    if (mounted) localStorage.setItem("evcal.period", periodKey(selected));
+  }, [selected, mounted]);
   useEffect(() => {
     if (mounted) localStorage.setItem("evcal.variant", variant);
   }, [variant, mounted]);
@@ -517,8 +556,7 @@ export default function Calendar() {
     return () => window.removeEventListener("evcal:updated", h);
   }, []);
 
-  const year = 2026;
-  const months: Array<5 | 6> = [5, 6];
+  const { year, month: selectedMonth } = selected;
 
   const stats = useMemo(() => {
     if (!mounted) return { total: 0, seats: 0, booked: 0 };
@@ -536,7 +574,7 @@ export default function Calendar() {
       });
     });
     return { total, seats, booked };
-  }, [selectedMonth, tick, mounted]);
+  }, [year, selectedMonth, tick, mounted]);
 
   const handleOpen = useCallback(
     (ev: EventItem) => {
@@ -553,7 +591,7 @@ export default function Calendar() {
           <div className="brand-mark">枠</div>
           <div>
             <h1 className="brand-title">イベント枠カレンダー</h1>
-            <div className="brand-sub">2BASEの定例イベント・予約状況 / {year}年</div>
+            <div className="brand-sub">2BASE＋DXラボの定例イベント・予約状況</div>
           </div>
         </div>
 
@@ -561,11 +599,15 @@ export default function Calendar() {
           <div className="legend">
             <span className="legend-pill y">
               <span className="d" />
-              横須賀BASE（火・土）
+              横須賀BASE
             </span>
             <span className="legend-pill k">
               <span className="d" />
               港南台BASE
+            </span>
+            <span className="legend-pill dx">
+              <span className="d" />
+              DXラボ
             </span>
             <span className="legend-pill sem">
               <span className="d" />
@@ -599,16 +641,22 @@ export default function Calendar() {
       )}
 
       <div className="month-tabs">
-        {months.map((m) => (
-          <button
-            key={m}
-            className={`month-tab ${selectedMonth === m ? "active" : ""}`}
-            onClick={() => setSelectedMonth(m)}
-          >
-            <span className="m-num">{m}</span>
-            <span>月</span>
-          </button>
-        ))}
+        {PERIODS.map((p) => {
+          const isActive = p.year === selected.year && p.month === selected.month;
+          return (
+            <button
+              key={periodKey(p)}
+              className={`month-tab ${isActive ? "active" : ""}`}
+              onClick={() => setSelected(p)}
+            >
+              <span className="t-year">{p.year}</span>
+              <span>
+                <span className="m-num">{p.month}</span>
+                <span className="t-label">月</span>
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       <div className="month-header">
@@ -676,6 +724,21 @@ export default function Calendar() {
               6/3・6/17は特別企画「商店主セミナー」（定員20名）
               <br />
               お申し込み 045-352-7635（いつもの担当まで）
+            </div>
+          </div>
+        </div>
+        <div className="info-card dx">
+          <div className="ic-mark">DX</div>
+          <div>
+            <h4>DXラボ（SLA港南台校）</h4>
+            <div className="ic-meta">
+              毎週土曜開催（11:00–12:00 ／ 13:00–14:00 の2枠）
+              <br />
+              技術・くらし・Google・Apple・生成AI・Canva・商店主DX LAB
+              <br />
+              横浜市港南区港南台4-24-2 SLA港南台校 DXラボ
+              <br />
+              2026年4月〜2027年3月の年間スケジュール
             </div>
           </div>
         </div>
