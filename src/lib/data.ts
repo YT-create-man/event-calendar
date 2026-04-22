@@ -37,7 +37,7 @@ type ScheduledEvent = {
 
 const YOKOSUKA_ADDRESS = "横須賀市大津町1-22-22 SLMC横須賀BASE";
 const KOUNANDAI_ADDRESS = "横浜市港南区港南台4-24-2 SLMC港南台BASE";
-const DXLAB_ADDRESS = "横浜市港南区港南台4-24-2 SLA港南台校 DXラボ";
+const DXLAB_ADDRESS = "オンライン開催";
 
 const SCHEDULED: ScheduledEvent[] = [
   // 横須賀BASE 2026年5月（毎週 火・土 14:00〜 ※16日のみ13:00〜、定員6名）
@@ -329,7 +329,7 @@ function baseEventsForDate(
     const key = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
     const baseCode = s.base === Y_BASE ? "y" : s.base === K_BASE ? "k" : "d";
     const baseName =
-      s.base === Y_BASE ? "横須賀BASE" : s.base === K_BASE ? "港南台BASE" : "DXラボ";
+      s.base === Y_BASE ? "横須賀BASE" : s.base === K_BASE ? "港南台BASE" : "DXラボ（オンライン）";
     const address =
       s.base === Y_BASE ? YOKOSUKA_ADDRESS : s.base === K_BASE ? KOUNANDAI_ADDRESS : DXLAB_ADDRESS;
     const startHour = s.time.split(":")[0];

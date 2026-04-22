@@ -607,7 +607,7 @@ export default function Calendar() {
             </span>
             <span className="legend-pill dx">
               <span className="d" />
-              DXラボ
+              DXラボ（オンライン）
             </span>
             <span className="legend-pill sem">
               <span className="d" />
@@ -730,13 +730,13 @@ export default function Calendar() {
         <div className="info-card dx">
           <div className="ic-mark">DX</div>
           <div>
-            <h4>DXラボ（SLA港南台校）</h4>
+            <h4>DXラボ（オンライン）</h4>
             <div className="ic-meta">
               毎週土曜開催（11:00–12:00 ／ 13:00–14:00 の2枠）
               <br />
               技術・くらし・Google・Apple・生成AI・Canva・商店主DX LAB
               <br />
-              横浜市港南区港南台4-24-2 SLA港南台校 DXラボ
+              開催形式：オンライン（来店不要）
               <br />
               2026年4月〜2027年3月の年間スケジュール
             </div>
