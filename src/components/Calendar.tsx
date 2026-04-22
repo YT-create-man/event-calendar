@@ -736,7 +736,7 @@ export default function Calendar() {
               <br />
               技術・くらし・Google・Apple・生成AI・Canva・商店主DX LAB
               <br />
-              開催形式：オンライン（来店不要）
+              開催形式：オンライン
               <br />
               2026年4月〜2027年3月の年間スケジュール
             </div>
