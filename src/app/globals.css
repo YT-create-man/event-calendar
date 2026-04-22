@@ -255,7 +255,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .day-cell {
   background: #fff;
-  min-height: 128px;
+  height: 210px;
   padding: 8px 8px 10px;
   display: flex; flex-direction: column;
   position: relative;
@@ -292,8 +292,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .day-events {
   display: flex; flex-direction: column; gap: 4px;
+  flex: 1;
   min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
+.day-events::-webkit-scrollbar { width: 4px; }
+.day-events::-webkit-scrollbar-thumb { background: rgba(0,0,0,.12); border-radius: 4px; }
 
 /* ========== event chip ========== */
 .event-chip {
@@ -601,7 +606,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 /* ========== variant: compact ========== */
-.app.variant-compact .day-cell { min-height: 96px; }
+.app.variant-compact .day-cell { height: 150px; }
 .app.variant-compact .event-chip { padding: 4px 6px; }
 .app.variant-compact .chip-title { font-size: 11px; }
 .app.variant-compact .chip-meta { font-size: 9.5px; }
@@ -623,7 +628,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .app.variant-bold .weekday-header.sun { color: #FCA5A5; }
 .app.variant-bold .weekday-header.sat { color: #93C5FD; }
-.app.variant-bold .day-cell { min-height: 132px; }
+.app.variant-bold .day-cell { height: 220px; }
 .app.variant-bold .day-num { font-size: 22px; }
 .app.variant-bold .event-chip { border-radius: 4px; border-width: 1.5px; }
 .app.variant-bold .month-title .m-big { font-size: 88px; }
@@ -816,7 +821,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @media (max-width: 900px) {
   .app { padding: 16px 12px 60px; }
   .month-title .m-big { font-size: 52px; }
-  .day-cell { min-height: 88px; padding: 4px; }
+  .day-cell { height: 160px; padding: 4px; }
   .chip-title { font-size: 10.5px; }
   .info-row { grid-template-columns: 1fr; }
 }
