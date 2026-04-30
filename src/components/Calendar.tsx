@@ -2,13 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  buildFormUrl,
   buildMonth,
   eventsForDate,
+  loadAllEvents,
   remaining,
-  resetAllEdits,
-  resetEvent,
   statusOf,
-  updateEvent,
   WEEKDAYS_JA,
   type EventItem,
   type MonthCell,
@@ -45,25 +44,27 @@ function baseClass(base: EventItem["base"]) {
   return base === "yokosuka" ? "y" : base === "kounandai" ? "k" : "dx";
 }
 
+function isSpecial(ev: EventItem) {
+  return ev.kind === "商店主" || ev.kind === "L&W" || ev.kind === "AO生";
+}
+
 function EventChip({
   ev,
   onClick,
   variant,
-  editMode,
 }: {
   ev: EventItem;
   onClick: (ev: EventItem) => void;
   variant: Variant;
-  editMode: boolean;
 }) {
   const r = remaining(ev);
   const status = statusOf(ev);
-  const isSeminar = ev.kind === "seminar";
   const colors = baseColorTokens(ev.base);
+  const special = isSpecial(ev);
 
   return (
     <button
-      className={`event-chip ${variant} ${isSeminar ? "is-seminar" : ""} ${status} ${editMode ? "is-edit" : ""}`}
+      className={`event-chip ${variant} ${special ? "is-seminar" : ""} ${status}`}
       onClick={(e) => {
         e.stopPropagation();
         onClick(ev);
@@ -73,7 +74,7 @@ function EventChip({
       <span className="chip-dot" style={{ background: colors.dot }} />
       <span className="chip-body">
         <span className="chip-title">
-          {isSeminar && <span className="chip-badge-seminar">特別</span>}
+          {special && <span className="chip-badge-seminar">{ev.kind}</span>}
           {ev.title}
         </span>
         {ev.teacher && <span className="chip-teacher">講師：{ev.teacher}</span>}
@@ -90,29 +91,22 @@ function EventChip({
           )}
         </span>
       </span>
-      {editMode && <span className="chip-edit-badge">✎</span>}
     </button>
   );
 }
 
 function DayCell({
   cell,
+  events,
   onOpenEvent,
   variant,
-  editMode,
-  tick,
 }: {
   cell: NonNullable<MonthCell>;
+  events: EventItem[];
   onOpenEvent: (ev: EventItem) => void;
   variant: Variant;
-  editMode: boolean;
-  tick: number;
 }) {
   const { year, month, day, weekday } = cell;
-  const events = useMemo(
-    () => eventsForDate(year, month, day, weekday),
-    [year, month, day, weekday, tick],
-  );
   const isSun = weekday === 0;
   const isSat = weekday === 6;
   const today = new Date();
@@ -129,13 +123,7 @@ function DayCell({
       </div>
       <div className="day-events">
         {events.map((ev) => (
-          <EventChip
-            key={ev.id}
-            ev={ev}
-            onClick={onOpenEvent}
-            variant={variant}
-            editMode={editMode}
-          />
+          <EventChip key={ev.id} ev={ev} onClick={onOpenEvent} variant={variant} />
         ))}
       </div>
     </div>
@@ -145,21 +133,19 @@ function DayCell({
 function MonthGrid({
   year,
   month,
+  all,
   onOpenEvent,
   variant,
-  editMode,
-  tick,
 }: {
   year: number;
   month: number;
+  all: EventItem[];
   onOpenEvent: (ev: EventItem) => void;
   variant: Variant;
-  editMode: boolean;
-  tick: number;
 }) {
   const { cells } = useMemo(() => buildMonth(year, month), [year, month]);
   return (
-    <div className={`month-grid ${editMode ? "is-edit" : ""}`}>
+    <div className="month-grid">
       {WEEKDAYS_JA.map((w, i) => (
         <div
           key={w}
@@ -173,10 +159,9 @@ function MonthGrid({
           <DayCell
             key={i}
             cell={c}
+            events={eventsForDate(all, c.year, c.month, c.day)}
             onOpenEvent={onOpenEvent}
             variant={variant}
-            editMode={editMode}
-            tick={tick}
           />
         ) : (
           <div key={i} className="day-cell empty" />
@@ -189,18 +174,13 @@ function MonthGrid({
 function EventDetailModal({
   ev,
   onClose,
-  onEdit,
 }: {
   ev: EventItem;
   onClose: () => void;
-  onEdit: (ev: EventItem) => void;
 }) {
   const r = remaining(ev);
   const status = statusOf(ev);
   const bcls = baseClass(ev.base);
-  const [count, setCount] = useState(1);
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     const esc = (e: KeyboardEvent) => {
@@ -210,11 +190,9 @@ function EventDetailModal({
     return () => window.removeEventListener("keydown", esc);
   }, [onClose]);
 
-  const parts = ev.id.split("-");
-  const y = Number(parts[0]);
-  const m = Number(parts[1]);
-  const d = Number(parts[2]);
+  const [y, m, d] = ev.date.split("-").map(Number);
   const wd = new Date(y, m - 1, d).getDay();
+  const formUrl = buildFormUrl(ev);
 
   return (
     <div className="modal-scrim" onClick={onClose}>
@@ -224,14 +202,9 @@ function EventDetailModal({
             <span className="modal-base-dot" />
             {ev.baseName}
           </div>
-          <div style={{ display: "flex", gap: 6 }}>
-            <button className="modal-edit-btn" onClick={() => onEdit(ev)}>
-              ✎ 編集
-            </button>
-            <button className="modal-close" onClick={onClose} aria-label="閉じる">
-              ×
-            </button>
-          </div>
+          <button className="modal-close" onClick={onClose} aria-label="閉じる">
+            ×
+          </button>
         </div>
 
         <div className="modal-body">
@@ -241,7 +214,7 @@ function EventDetailModal({
             <span className="modal-date-w">({WEEKDAYS_JA[wd]})</span>
           </div>
           <h2 className="modal-title">
-            {ev.kind === "seminar" && <span className="modal-badge-seminar">特別企画</span>}
+            {isSpecial(ev) && <span className="modal-badge-seminar">{ev.kind}</span>}
             {ev.title}
           </h2>
           {ev.subtitle && <p className="modal-subtitle">{ev.subtitle}</p>}
@@ -291,206 +264,25 @@ function EventDetailModal({
             </div>
           </div>
 
-          {submitted ? (
-            <div className="modal-submitted">
-              ご予約ありがとうございます。確認メールをお送りしました。
-            </div>
-          ) : status !== "full" ? (
-            <div className="modal-booking">
-              <label>参加人数</label>
-              <div className="counter">
-                <button onClick={() => setCount(Math.max(1, count - 1))}>−</button>
-                <span>{count}名</span>
-                <button onClick={() => setCount(Math.min(r, count + 1))}>＋</button>
-              </div>
-              <button
-                className={`btn-reserve ${bcls}`}
-                disabled={submitting}
-                onClick={() => {
-                  setSubmitting(true);
-                  setTimeout(() => {
-                    setSubmitted(true);
-                    setSubmitting(false);
-                  }, 600);
-                }}
-              >
-                {submitting ? "予約中…" : "この枠を予約する"}
-              </button>
-            </div>
-          ) : (
-            <div className="modal-waitlist">
-              <button className="btn-waitlist">キャンセル待ちに登録</button>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function EventEditModal({ ev, onClose }: { ev: EventItem; onClose: () => void }) {
-  const bcls = baseClass(ev.base);
-  const [form, setForm] = useState({
-    title: ev.title || "",
-    teacher: ev.teacher || "",
-    subtitle: ev.subtitle || "",
-    time: ev.time || "14:00–16:00",
-    capacity: String(ev.capacity ?? 8),
-    booked: String(ev.booked ?? 0),
-    notes: ev.notes || "",
-  });
-  const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
-    const esc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", esc);
-    return () => window.removeEventListener("keydown", esc);
-  }, [onClose]);
-
-  const parts = ev.id.split("-");
-  const y = Number(parts[0]);
-  const m = Number(parts[1]);
-  const d = Number(parts[2]);
-  const wd = new Date(y, m - 1, d).getDay();
-
-  const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
-    setForm((f) => ({ ...f, [k]: v }));
-
-  const save = () => {
-    const cap = Math.max(1, Number(form.capacity) || 1);
-    const patch: Partial<EventItem> = {
-      title: form.title,
-      teacher: form.teacher,
-      subtitle: form.subtitle,
-      time: form.time,
-      notes: form.notes,
-      capacity: cap,
-      booked: Math.max(0, Math.min(Number(form.booked) || 0, cap)),
-    };
-    updateEvent(ev.id, patch);
-    setSaved(true);
-    setTimeout(() => {
-      setSaved(false);
-      onClose();
-    }, 700);
-  };
-
-  const reset = () => {
-    if (confirm("このイベントの編集内容を初期値に戻しますか？")) {
-      resetEvent(ev.id);
-      onClose();
-    }
-  };
-
-  return (
-    <div className="modal-scrim" onClick={onClose}>
-      <div className="modal-card edit" onClick={(e) => e.stopPropagation()}>
-        <div className={`modal-header ${bcls}`}>
-          <div className="modal-base-tag">
-            <span className="modal-base-dot" />
-            <span style={{ fontWeight: 800 }}>編集 · {ev.baseName}</span>
-          </div>
-          <button className="modal-close" onClick={onClose} aria-label="閉じる">
-            ×
-          </button>
-        </div>
-
-        <div className="modal-body">
-          <div className="modal-date" style={{ marginBottom: 14 }}>
-            <span className="modal-date-m">{m}月</span>
-            <span className="modal-date-d">{d}</span>
-            <span className="modal-date-w">({WEEKDAYS_JA[wd]})</span>
-          </div>
-
-          <div className="edit-grid">
-            <label className="field">
-              <span className="field-label">イベント名</span>
-              <input
-                type="text"
-                value={form.title}
-                onChange={(e) => set("title", e.target.value)}
-                placeholder="例：こども造形ワークショップ"
-              />
-            </label>
-
-            <label className="field">
-              <span className="field-label">講師名</span>
-              <input
-                type="text"
-                value={form.teacher}
-                onChange={(e) => set("teacher", e.target.value)}
-                placeholder="例：山田 あきこ"
-              />
-            </label>
-
-            <label className="field">
-              <span className="field-label">サブタイトル／説明</span>
-              <input
-                type="text"
-                value={form.subtitle}
-                onChange={(e) => set("subtitle", e.target.value)}
-                placeholder="例：地域で商いを続けるヒント"
-              />
-            </label>
-
-            <div className="field-row">
-              <label className="field">
-                <span className="field-label">時間</span>
-                <input
-                  type="text"
-                  value={form.time}
-                  onChange={(e) => set("time", e.target.value)}
-                  placeholder="14:00–16:00"
-                />
-              </label>
-              <label className="field" style={{ maxWidth: 110 }}>
-                <span className="field-label">定員</span>
-                <input
-                  type="number"
-                  min={1}
-                  value={form.capacity}
-                  onChange={(e) => set("capacity", e.target.value)}
-                />
-              </label>
-              <label className="field" style={{ maxWidth: 110 }}>
-                <span className="field-label">予約済</span>
-                <input
-                  type="number"
-                  min={0}
-                  value={form.booked}
-                  onChange={(e) => set("booked", e.target.value)}
-                />
-              </label>
-            </div>
-
-            <label className="field">
-              <span className="field-label">メモ（内部用）</span>
-              <textarea
-                value={form.notes}
-                rows={3}
-                onChange={(e) => set("notes", e.target.value)}
-                placeholder="持ち物、注意事項など"
-              />
-            </label>
-          </div>
-
-          <div className="edit-actions">
-            <button className="btn-secondary" onClick={reset}>
-              初期値に戻す
-            </button>
-            <div style={{ flex: 1 }} />
-            <button className="btn-secondary" onClick={onClose}>
-              キャンセル
-            </button>
-            <button
+          <div className="modal-booking" style={{ display: "flex", gap: 8 }}>
+            <a
               className={`btn-reserve ${bcls}`}
-              onClick={save}
-              style={{ width: "auto", padding: "12px 22px" }}
+              href={formUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ flex: 1, textAlign: "center", textDecoration: "none" }}
             >
-              {saved ? "✓ 保存しました" : "保存する"}
-            </button>
+              予約する
+            </a>
+            <a
+              className="btn-secondary"
+              href={formUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textAlign: "center", textDecoration: "none" }}
+            >
+              取消する
+            </a>
           </div>
         </div>
       </div>
@@ -522,11 +314,10 @@ function periodKey(p: Period) {
 export default function Calendar() {
   const [mounted, setMounted] = useState(false);
   const [selected, setSelected] = useState<Period>({ year: 2026, month: 5 });
-  const [editMode, setEditMode] = useState(false);
   const [variant, setVariant] = useState<Variant>("soft");
   const [openEvent, setOpenEvent] = useState<EventItem | null>(null);
-  const [editEvent, setEditEvent] = useState<EventItem | null>(null);
-  const [tick, setTick] = useState(0);
+  const [all, setAll] = useState<EventItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -535,7 +326,6 @@ export default function Calendar() {
       const match = PERIODS.find((p) => periodKey(p) === saved);
       if (match) setSelected(match);
     }
-    setEditMode(localStorage.getItem("evcal.editMode") === "1");
     const v = localStorage.getItem("evcal.variant");
     if (v === "soft" || v === "compact" || v === "bold") setVariant(v);
   }, []);
@@ -546,14 +336,18 @@ export default function Calendar() {
   useEffect(() => {
     if (mounted) localStorage.setItem("evcal.variant", variant);
   }, [variant, mounted]);
-  useEffect(() => {
-    if (mounted) localStorage.setItem("evcal.editMode", editMode ? "1" : "0");
-  }, [editMode, mounted]);
 
   useEffect(() => {
-    const h = () => setTick((t) => t + 1);
-    window.addEventListener("evcal:updated", h);
-    return () => window.removeEventListener("evcal:updated", h);
+    let active = true;
+    loadAllEvents().then((data) => {
+      if (active) {
+        setAll(data);
+        setLoading(false);
+      }
+    });
+    return () => {
+      active = false;
+    };
   }, []);
 
   const { year, month: selectedMonth } = selected;
@@ -566,7 +360,7 @@ export default function Calendar() {
     let booked = 0;
     cells.forEach((c) => {
       if (!c) return;
-      const evs = eventsForDate(c.year, c.month, c.day, c.weekday);
+      const evs = eventsForDate(all, c.year, c.month, c.day);
       total += evs.length;
       evs.forEach((e) => {
         seats += e.capacity;
@@ -574,24 +368,18 @@ export default function Calendar() {
       });
     });
     return { total, seats, booked };
-  }, [year, selectedMonth, tick, mounted]);
+  }, [year, selectedMonth, mounted, all]);
 
-  const handleOpen = useCallback(
-    (ev: EventItem) => {
-      if (editMode) setEditEvent(ev);
-      else setOpenEvent(ev);
-    },
-    [editMode],
-  );
+  const handleOpen = useCallback((ev: EventItem) => setOpenEvent(ev), []);
 
   return (
-    <div className={`app variant-${variant} ${editMode ? "edit-active" : ""}`}>
+    <div className={`app variant-${variant}`}>
       <header className="app-header">
         <div className="brand">
           <div className="brand-mark">枠</div>
           <div>
             <h1 className="brand-title">イベント枠カレンダー</h1>
-            <div className="brand-sub">2BASE＋DXラボの定例イベント・予約状況</div>
+            <div className="brand-sub">2BASE＋DX LABの定例イベント・予約状況</div>
           </div>
         </div>
 
@@ -607,38 +395,11 @@ export default function Calendar() {
             </span>
             <span className="legend-pill dx">
               <span className="d" />
-              DXラボ（オンライン）
-            </span>
-            <span className="legend-pill sem">
-              <span className="d" />
-              <span className="legend-badge">特別</span>
-              商店主セミナー
+              DX LAB（オンライン）
             </span>
           </div>
-          <button
-            className={`edit-toggle ${editMode ? "on" : ""}`}
-            onClick={() => setEditMode((v) => !v)}
-            title={editMode ? "閲覧モードに戻す" : "編集モード：イベントをクリックして編集"}
-          >
-            <span className="edit-toggle-icon">{editMode ? "✓" : "✎"}</span>
-            {editMode ? "編集モード：ON" : "編集モード"}
-          </button>
         </div>
       </header>
-
-      {editMode && (
-        <div className="edit-banner">
-          <span>✎ 編集モード — 各イベントをクリックすると講師名・タイトル・定員などを編集できます</span>
-          <button
-            className="banner-btn"
-            onClick={() => {
-              if (confirm("すべての編集内容を初期値に戻しますか？")) resetAllEdits();
-            }}
-          >
-            すべての編集をリセット
-          </button>
-        </div>
-      )}
 
       <div className="month-tabs">
         {PERIODS.map((p) => {
@@ -682,14 +443,19 @@ export default function Calendar() {
       </div>
 
       <div className="calendar-shell">
-        <MonthGrid
-          year={year}
-          month={selectedMonth}
-          variant={variant}
-          editMode={editMode}
-          onOpenEvent={handleOpen}
-          tick={tick}
-        />
+        {loading ? (
+          <div style={{ padding: 40, textAlign: "center", color: "#6B7280" }}>
+            読み込み中…
+          </div>
+        ) : (
+          <MonthGrid
+            year={year}
+            month={selectedMonth}
+            all={all}
+            variant={variant}
+            onOpenEvent={handleOpen}
+          />
+        )}
       </div>
 
       <div className="info-row">
@@ -698,13 +464,7 @@ export default function Calendar() {
           <div>
             <h4>横須賀BASE</h4>
             <div className="ic-meta">
-              毎週 火・土 14:00–16:00（認知症予防講座のみ13:00開始）
-              <br />
               横須賀市大津町1-22-22 SLMC横須賀BASE
-              <br />
-              事前予約制・定員6名（メンバー＆お友達は無料／一般1,000円）
-              <br />
-              5/20・6/10は特別企画「商店主セミナー」（定員20名）
               <br />
               お申し込み 046-825-5558（10:30–19:00 ※店休日を除く）
             </div>
@@ -715,27 +475,19 @@ export default function Calendar() {
           <div>
             <h4>港南台BASE（SLA港南台校）</h4>
             <div className="ic-meta">
-              14:00–16:00 開催（定員はイベントごとに異なる／増枠可）
-              <br />
               横浜市港南区港南台4-24-2 SLMC港南台BASE
               <br />
               開館 10:30–19:00 ／ 休館 水曜
               <br />
-              6/3・6/17は特別企画「商店主セミナー」（定員20名）
-              <br />
-              お申し込み 045-352-7635（いつもの担当まで）
+              お申し込み 045-352-7635
             </div>
           </div>
         </div>
         <div className="info-card dx">
           <div className="ic-mark">DX</div>
           <div>
-            <h4>DXラボ（オンライン）</h4>
+            <h4>DX LAB（オンライン）</h4>
             <div className="ic-meta">
-              毎週土曜開催（11:00–12:00 ／ 13:00–14:00 の2枠）
-              <br />
-              技術・くらし・Google・Apple・生成AI・Canva・商店主DX LAB
-              <br />
               開催形式：オンライン
               <br />
               2026年4月〜2027年3月の年間スケジュール
@@ -757,17 +509,7 @@ export default function Calendar() {
         ))}
       </div>
 
-      {openEvent && (
-        <EventDetailModal
-          ev={openEvent}
-          onClose={() => setOpenEvent(null)}
-          onEdit={(ev) => {
-            setOpenEvent(null);
-            setEditEvent(ev);
-          }}
-        />
-      )}
-      {editEvent && <EventEditModal ev={editEvent} onClose={() => setEditEvent(null)} />}
+      {openEvent && <EventDetailModal ev={openEvent} onClose={() => setOpenEvent(null)} />}
     </div>
   );
 }
