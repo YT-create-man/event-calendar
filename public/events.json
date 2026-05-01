@@ -1662,5 +1662,21 @@
     "booked": 0,
     "status": "open",
     "notes": ""
+  },
+  {
+    "id": "20260503_yokosuka_c9a2a8a6",
+    "date": "2026-05-03",
+    "base": "yokosuka",
+    "baseName": "横須賀BASE",
+    "address": "横須賀市大津町1-22-22 SLMC横須賀BASE",
+    "title": "生成AI活用講座",
+    "teacher": "",
+    "subtitle": "",
+    "time": "11:00–12:00",
+    "kind": "L&W",
+    "capacity": 10,
+    "booked": 0,
+    "status": "open",
+    "notes": ""
   }
 ]
