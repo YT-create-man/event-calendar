@@ -1,37 +1,5 @@
 [
   {
-    "id": "20260502_yokosuka_463846b1",
-    "date": "2026-05-02",
-    "base": "yokosuka",
-    "baseName": "横須賀BASE",
-    "address": "横須賀市大津町1-22-22 SLMC横須賀BASE",
-    "title": "生成AI体験",
-    "teacher": "",
-    "subtitle": "ChatGPTを使ってみよう！",
-    "time": "14:00–16:00",
-    "kind": "通常",
-    "capacity": 6,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
-    "id": "20260502_dxlab_0460e45b",
-    "date": "2026-05-02",
-    "base": "dxlab",
-    "baseName": "DX LAB",
-    "address": "オンライン開催",
-    "title": "くらしの中のデジタルリテラシー講座",
-    "teacher": "",
-    "subtitle": "そのニュース本当ですか？フェイク動画・画像の現在地",
-    "time": "13:00–14:00",
-    "kind": "通常",
-    "capacity": 10,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
     "id": "20260505_yokosuka_3842c64b",
     "date": "2026-05-05",
     "base": "yokosuka",
