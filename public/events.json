@@ -1,21 +1,5 @@
 [
   {
-    "id": "20260505_yokosuka_3842c64b",
-    "date": "2026-05-05",
-    "base": "yokosuka",
-    "baseName": "横須賀BASE",
-    "address": "横須賀市大津町1-22-22 SLMC横須賀BASE",
-    "title": "安全講習",
-    "teacher": "",
-    "subtitle": "PC・スマホを使う際の注意点や活用方法を学ぶ",
-    "time": "14:00–16:00",
-    "kind": "通常",
-    "capacity": 6,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
     "id": "20260507_kounandai_53638255",
     "date": "2026-05-07",
     "base": "kounandai",
