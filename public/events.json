@@ -1,21 +1,5 @@
 [
   {
-    "id": "20260507_kounandai_53638255",
-    "date": "2026-05-07",
-    "base": "kounandai",
-    "baseName": "港南台BASE",
-    "address": "横浜市港南区港南台4-24-2 SLMC港南台BASE",
-    "title": "Smart Life AO校説明会",
-    "teacher": "",
-    "subtitle": "AO校で何ができる？スマートライフデザイン学とは？どう活用できるかをまるごと説明",
-    "time": "14:00–16:00",
-    "kind": "通常",
-    "capacity": 20,
-    "booked": 0,
-    "status": "open",
-    "notes": "参加費：無料／定員20名（増枠可）"
-  },
-  {
     "id": "20260509_yokosuka_f1c647d1",
     "date": "2026-05-09",
     "base": "yokosuka",
