@@ -1,21 +1,5 @@
 [
   {
-    "id": "20260510_dxlab_5c1ccff6",
-    "date": "2026-05-10",
-    "base": "dxlab",
-    "baseName": "DX LAB",
-    "address": "オンライン開催",
-    "title": "技術活用講座",
-    "teacher": "",
-    "subtitle": "パソコン・スマホのセキュリティ対策の重要性",
-    "time": "13:00–14:00",
-    "kind": "通常",
-    "capacity": 10,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
     "id": "20260512_yokosuka_9293244c",
     "date": "2026-05-12",
     "base": "yokosuka",
