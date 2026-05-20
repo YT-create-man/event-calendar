@@ -1,21 +1,5 @@
 [
   {
-    "id": "20260519_yokosuka_3f160245",
-    "date": "2026-05-19",
-    "base": "yokosuka",
-    "baseName": "横須賀BASE",
-    "address": "横須賀市大津町1-22-22 SLMC横須賀BASE",
-    "title": "iPhoneで綺麗な写真を撮ろう",
-    "teacher": "",
-    "subtitle": "iPhoneで綺麗な写真を撮るコツを学ぶ",
-    "time": "14:00–16:00",
-    "kind": "通常",
-    "capacity": 6,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
     "id": "20260520_yokosuka_32d830d6",
     "date": "2026-05-20",
     "base": "yokosuka",
