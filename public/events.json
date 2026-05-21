@@ -1,21 +1,5 @@
 [
   {
-    "id": "20260520_yokosuka_32d830d6",
-    "date": "2026-05-20",
-    "base": "yokosuka",
-    "baseName": "横須賀BASE",
-    "address": "横須賀市大津町1-22-22 SLMC横須賀BASE",
-    "title": "商店主セミナー",
-    "teacher": "浅川",
-    "subtitle": "地域で商いを続けるヒント",
-    "time": "14:00–16:00",
-    "kind": "商店主",
-    "capacity": 20,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
     "id": "20260521_kounandai_cd62e6ce",
     "date": "2026-05-21",
     "base": "kounandai",
