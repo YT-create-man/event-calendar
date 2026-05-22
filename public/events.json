@@ -1,21 +1,5 @@
 [
   {
-    "id": "20260521_kounandai_cd62e6ce",
-    "date": "2026-05-21",
-    "base": "kounandai",
-    "baseName": "港南台BASE",
-    "address": "横浜市港南区港南台4-24-2 SLMC港南台BASE",
-    "title": "AI講習 〜GoogleWorkspace編〜",
-    "teacher": "",
-    "subtitle": "話題のAIをGoogleWorkspaceで。日常で役立つAIを一緒に学ぶ",
-    "time": "14:00–16:00",
-    "kind": "通常",
-    "capacity": 15,
-    "booked": 0,
-    "status": "open",
-    "notes": "AO生・CC会員限定／定員15名（増枠可）"
-  },
-  {
     "id": "20260523_yokosuka_5b269ba5",
     "date": "2026-05-23",
     "base": "yokosuka",
