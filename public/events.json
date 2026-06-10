@@ -1,21 +1,5 @@
 [
   {
-    "id": "20260609_yokosuka_b504cf21",
-    "date": "2026-06-09",
-    "base": "yokosuka",
-    "baseName": "横須賀BASE",
-    "address": "横須賀市大津町1-22-22 SLMC横須賀BASE",
-    "title": "生成AIをやってみよう",
-    "teacher": "",
-    "subtitle": "ChatGPTでの画像生成を学ぶ",
-    "time": "14:00–16:00",
-    "kind": "通常",
-    "capacity": 6,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
     "id": "20260610_yokosuka_32d830d6",
     "date": "2026-06-10",
     "base": "yokosuka",
