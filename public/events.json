@@ -1,21 +1,5 @@
 [
   {
-    "id": "20260611_kounandai_60befdc9",
-    "date": "2026-06-11",
-    "base": "kounandai",
-    "baseName": "港南台BASE",
-    "address": "横浜市港南区港南台4-24-2 SLMC港南台BASE",
-    "title": "パーソナルカラー診断",
-    "teacher": "",
-    "subtitle": "",
-    "time": "14:00–16:00",
-    "kind": "通常",
-    "capacity": 10,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
     "id": "20260613_yokosuka_f1c647d1",
     "date": "2026-06-13",
     "base": "yokosuka",
