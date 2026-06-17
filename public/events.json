@@ -1,21 +1,5 @@
 [
   {
-    "id": "20260616_yokosuka_5fa4de3d",
-    "date": "2026-06-16",
-    "base": "yokosuka",
-    "baseName": "横須賀BASE",
-    "address": "横須賀市大津町1-22-22 SLMC横須賀BASE",
-    "title": "安心アルバムを作ろう",
-    "teacher": "",
-    "subtitle": "もしもの場合に備えて個人情報と写真でアルバムを作成",
-    "time": "14:00–16:00",
-    "kind": "通常",
-    "capacity": 6,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
     "id": "20260617_kounandai_32d830d6",
     "date": "2026-06-17",
     "base": "kounandai",
