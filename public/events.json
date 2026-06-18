@@ -1,21 +1,5 @@
 [
   {
-    "id": "20260617_kounandai_32d830d6",
-    "date": "2026-06-17",
-    "base": "kounandai",
-    "baseName": "港南台BASE",
-    "address": "横浜市港南区港南台4-24-2 SLMC港南台BASE",
-    "title": "商店主セミナー",
-    "teacher": "田中",
-    "subtitle": "地域で商いを続けるヒント",
-    "time": "14:00–16:00",
-    "kind": "商店主",
-    "capacity": 20,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
     "id": "20260620_yokosuka_356c0636",
     "date": "2026-06-20",
     "base": "yokosuka",
