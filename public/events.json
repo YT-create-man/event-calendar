@@ -1,37 +1,5 @@
 [
   {
-    "id": "20260704_dxlab_5c1ccff6",
-    "date": "2026-07-04",
-    "base": "dxlab",
-    "baseName": "DX LAB",
-    "address": "オンライン開催",
-    "title": "技術活用講座",
-    "teacher": "",
-    "subtitle": "万が一に備えたパソコン・スマホのデータバックアップ",
-    "time": "11:00–12:00",
-    "kind": "通常",
-    "capacity": 10,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
-    "id": "20260704_dxlab_0460e45b",
-    "date": "2026-07-04",
-    "base": "dxlab",
-    "baseName": "DX LAB",
-    "address": "オンライン開催",
-    "title": "くらしの中のデジタルリテラシー講座",
-    "teacher": "",
-    "subtitle": "仕事や家庭で使うスマホ・パソコン安全ですか？",
-    "time": "13:00–14:00",
-    "kind": "通常",
-    "capacity": 10,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
     "id": "20260711_dxlab_87be0662",
     "date": "2026-07-11",
     "base": "dxlab",
