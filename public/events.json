@@ -1,37 +1,5 @@
 [
   {
-    "id": "20260711_dxlab_87be0662",
-    "date": "2026-07-11",
-    "base": "dxlab",
-    "baseName": "DX LAB",
-    "address": "オンライン開催",
-    "title": "Google活用講座",
-    "teacher": "",
-    "subtitle": "地図を味方につける 〜現在地共有と防災マップ〜",
-    "time": "11:00–12:00",
-    "kind": "通常",
-    "capacity": 10,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
-    "id": "20260711_dxlab_726a0f3b",
-    "date": "2026-07-11",
-    "base": "dxlab",
-    "baseName": "DX LAB",
-    "address": "オンライン開催",
-    "title": "商店主DX LAB",
-    "teacher": "",
-    "subtitle": "AI(Gemini)にお任せ！売れるキャッチコピー＆商品説明文 自動生成 Instagram投稿講座",
-    "time": "13:00–14:00",
-    "kind": "通常",
-    "capacity": 10,
-    "booked": 0,
-    "status": "open",
-    "notes": ""
-  },
-  {
     "id": "20260718_dxlab_b487c867",
     "date": "2026-07-18",
     "base": "dxlab",
